@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ACB HEMART - Belanja Lebih Hemat</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #f9f9f9; color: #333; }
+    header {
+      background: white;
+      text-align: center;
+      padding: 15px 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .logo {
+      max-width: 100%;
+      height: auto;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .hero-btn {
+      background-color: #25D366;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    .hero-btn:hover {
+      background-color: #128C7E;
+    }
+    .container { max-width: 960px; margin: 20px auto; padding: 0 15px; }
+    h2 { margin: 20px 0 12px; color: #2E7D32; }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .product {
+      background: white; padding: 12px; border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1); text-align: center;
+      overflow: hidden;
+    }
+    .product img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .product h3 { font-size: 14px; margin: 6px 0; line-height: 1.3; }
+    .product .price { color: #e74c3c; font-weight: bold; }
+    .btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; }
+    .add { background: #4CAF50; color: white; }
+    .cart-icon {
+      position: fixed; top: 15px; right: 20px;
+      background: #25D366; color: white; width: 45px; height: 45px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .cart-panel {
+      position: fixed; right: -320px; top: 0; width: 300px; height: 100vh;
+      background: white; box-shadow: -2px 0 10px rgba(0,0,0,0.2); padding: 20px;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+    }
+    .cart-panel.open { right: 0; }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .cart-item { padding: 10px 0; border-bottom: 1px solid #eee; }
+    .checkout-btn {
+      background: #25D366; color: white; padding: 12px; border: none;
+      border-radius: 6px; width: 100%; font-size: 16px; margin-top: 20px; cursor: pointer;
+    }
+    .qty { display: flex; align-items: center; justify-content: center; margin: 6px 0; }
+    .qty button { width: 24px; background: #ddd; border: none; }
+    .qty span { margin: 0 8px; }
+    .close-cart { cursor: pointer; font-size: 20px; }
+    .total-price {
+      font-size: 18px; font-weight: bold; margin: 15px 0;
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <header>
+    <img src="ACBHEMART.jpeg" alt="ACB HEMART - Belanja lebih hemat" class="logo">
+    <a href="https://wa.me/6282123861749?text=Halo%20ACB%20HEMART%2C%20saya%20ingin%20memesan%3A%0A-%20[Nama%20Produk]%3A%20[Jumlah]%0A-%20Nama%3A%20[Nama%20Anda]%0A-%20Alamat%3A%20[Alamat%20Lengkap]" target="_blank" class="hero-btn">
+      Pesan Sekarang via WhatsApp
+    </a>
+  </header>
+
+  <div class="cart-icon" onclick="openCart()">🛒<span id="cart-count">0</span></div>
+
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h2>Keranjang Belanja</h2>
+      <span class="close-cart" onclick="closeCart()">×</span>
+    </div>
+    <div id="cart-items"></div>
+    <div class="total-price">Total: Rp<span id="total-amount">0</span></div>
+    <button class="checkout-btn" onclick="checkout()">Kirim Pesanan via WhatsApp</button>
+  </div>
+
+  <div class="container">
+    <h2>.Produk Sembako</h2>
+    <div class="product-grid" id="product-list">
+      <!-- Produk dimuat via JS -->
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { 
+        id: 1, 
+        name: "Beras sigeulis 5kg", 
+        price: 74500, 
+        image: "sigeulis.png"
+      },
+      { 
+        id: 2, 
+        name: "Minyak Goreng sovia 2L", 
+        price: 37900, 
+        image: "minyak sovia.png"
+      },
+      { 
+        id: 3, 
+        name: "Gulavit 1kg", 
+        price: 17900, 
+        image: "gulavit 1kg.png"
+      },
+      { 
+        id: 4, 
+        name: "Indomie Goreng", 
+        price: 3500, 
+        image: "indomie goreng.png"
+      },
+      { 
+        id: 5, 
+        name: "Aqua 600ml", 
+        price: 4200, 
+        image: "aqua 600ml.jpeg"
+      },
+      { 
+        id: 6, 
+        name: "Sabun Cuci Sunlight 680ml", 
+        price: 9900, 
+        image: "sunlight 680ml.jpg"
+      }
+    ];
+
+    let cart = {};
+
+    function renderProducts() {
+      const container = document.getElementById('product-list');
+      container.innerHTML = '';
+      products.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'product';
+        el.innerHTML = `
+          <img src="${p.image}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <div class="price">Rp${p.price.toLocaleString()}</div>
+          <button class="btn add" onclick="addToCart(${p.id})">Tambah</button>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    function addToCart(id) {
+      if (!cart[id]) cart[id] = { qty: 0, ...products.find(p => p.id === id) };
+      cart[id].qty += 1;
+      updateCartUI();
+    }
+
+    function changeQty(id, delta) {
+      if (cart[id]) {
+        cart[id].qty += delta;
+        if (cart[id].qty <= 0) delete cart[id];
+        updateCartUI();
+      }
+    }
+
+    function updateCartUI() {
+      const count = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cart-count').textContent = count;
+
+      const itemsEl = document.getElementById('cart-items');
+      itemsEl.innerHTML = '';
+      if (count === 0) {
+        itemsEl.innerHTML = '<p>Keranjang kosong</p>';
+        document.getElementById('total-amount').textContent = '0';
+        return;
+      }
+
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <div><strong>${item.name}</strong></div>
+          <div>Rp${item.price.toLocaleString()} × ${item.qty} = Rp${subtotal.toLocaleString()}</div>
+          <div class="qty">
+            <button onclick="changeQty(${item.id}, -1)">-</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+        `;
+        itemsEl.appendChild(div);
+      });
+
+      document.getElementById('total-amount').textContent = total.toLocaleString();
+    }
+
+    function openCart() {
+      document.getElementById('cart-panel').classList.add('open');
+    }
+
+    function closeCart() {
+      document.getElementById('cart-panel').classList.remove('open');
+    }
+
+    function checkout() {
+      if (Object.keys(cart).length === 0) {
+        alert("Keranjang masih kosong!");
+        return;
+      }
+
+      let message = "Halo ACB HEMART, saya ingin memesan:\n";
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        message += `- ${item.name}: ${item.qty} × Rp${item.price.toLocaleString()} = Rp${subtotal.toLocaleString()}\n`;
+      });
+      message += `\nTotal yang harus dibayar: Rp${total.toLocaleString()}\n`;
+      message += "\nNama: [Nama Anda]\nAlamat: [Alamat Lengkap]";
+
+      const waUrl = `https://wa.me/6282123861749?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    renderProducts();
+    updateCartUI();
+  </script>
+
+</body>
+</html>
