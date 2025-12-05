@@ -27,4 +27,4 @@ Proyek ini dibangun dengan teknologi web dasar: **HTML, CSS**, dan akan dikemban
 
 1. **Clone repositori ini:**
    ```bash
-   git clone https://github.com/nama-username-anda/acb-hemart.git
+   git clone https://github.com/acbhemart/acb-hemart.git
